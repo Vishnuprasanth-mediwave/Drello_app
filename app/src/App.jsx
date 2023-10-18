@@ -8,7 +8,7 @@ function App() {
 
   function todoReducer(tasks, action) {
     switch (action.type) {
-      case "TODO_ADD": {
+      case "TASK_ADD": {
         return [
           ...tasks,
           {
@@ -19,18 +19,17 @@ function App() {
           },
         ];
       }
-      case "TODO_EDITED": {
-        // const filtered = tasks.filter((t) => t.id != action.value);
-        // return [...filtered];
-        const editedTask = tasks.map((t) => {
-          if (t.id === action.value.id) {
-            return {
-              ...t,
-              text: action.value.value,
-              dateTime: new Date(),
-            };
-          }
-        });
+      case "TASK_DELETE": {
+        console.log(action.value);
+        const filtered = tasks.filter((t) => t.id !== action.value);
+        return filtered;
+      }
+      case "TASK_EDITED": {
+        const editedTask = [...tasks];
+        const idx = editedTask.findIndex((nt) => nt.id === action.value.id);
+        if (idx !== -1) {
+          editedTask[idx]["text"] = action.value.value;
+        }
         return editedTask;
       }
       default: {
@@ -41,13 +40,19 @@ function App() {
 
   function handleAdd(value) {
     dispatch({
-      type: "TODO_ADD",
+      type: "TASK_ADD",
       value: value,
+    });
+  }
+  function handleDelete(id) {
+    dispatch({
+      type: "TASK_DELETE",
+      value: id,
     });
   }
   function handleEdited(value, id) {
     dispatch({
-      type: "TODO_EDITED",
+      type: "TASK_EDITED",
       value: { value, id },
     });
   }
@@ -57,9 +62,10 @@ function App() {
       <div className="container">
         <h2>My todo</h2>
         <Card
-          addTodo={(text) => handleAdd(text)}
+          addTodo={handleAdd}
           tasks={tasks}
-          edited={handleEdited}
+          handleTaskEdit={handleEdited}
+          handleDelete={(id) => handleDelete(id)}
         />
       </div>
       <div className="progess">

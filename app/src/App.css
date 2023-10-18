@@ -1,8 +1,11 @@
-blockquote {
+textarea {
   margin: 0;
 }
 
-blockquote {
+textarea {
+  width: 90%;
+  font-size: 16px;
+  margin-bottom: 5px;
   padding: 15px;
   background: #eee;
   border-radius: 5px;
@@ -17,4 +20,20 @@ blockquote {
 .done {
   border: 1px solid rgb(35, 12, 149);
   height: 100vh;
+}
+
+.card {
+  margin: 20px;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 15px;
+  background-color: skyblue;
+}
+
+.date-time {
+  font-size: 14px;
+  color: black;
 }
