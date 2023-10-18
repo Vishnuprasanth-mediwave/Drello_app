@@ -2,16 +2,19 @@ blockquote {
   margin: 0;
 }
 
-blockquote p {
+blockquote {
   padding: 15px;
   background: #eee;
   border-radius: 5px;
 }
-
-blockquote p::before {
-  content: "\201C";
+.total-div {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  background-color: rgba(2, 140, 246, 0.74);
 }
-
-blockquote p::after {
-  content: "\201D";
+.container,
+.progess,
+.done {
+  border: 1px solid rgb(35, 12, 149);
+  height: 100vh;
 }

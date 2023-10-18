@@ -1,26 +1,37 @@
-import { useEffect, useReducer } from "react";
+import { useReducer } from "react";
 import Card from "./components/card";
+import { v4 as uuidv4 } from "uuid";
 import "./App.css";
 
 function App() {
-  const [todos, dispatch] = useReducer(todoReducer, []);
+  const [tasks, dispatch] = useReducer(todoReducer, []);
 
-  function todoReducer(todos, action) {
+  function todoReducer(tasks, action) {
     switch (action.type) {
       case "TODO_ADD": {
         return [
-          ...todos,
+          ...tasks,
           {
-            id: new Date().getTime(),
-            text: action.value,
-            isDone: false,
-            isEdit: false,
+            id: uuidv4(),
+            text: "",
+            dateTime: new Date(),
+            inState: "todo",
           },
         ];
       }
-      case "TODO_DELETE": {
-        const filtered = todos.filter((t) => t.id != action.value);
-        return [...filtered];
+      case "TODO_EDITED": {
+        // const filtered = tasks.filter((t) => t.id != action.value);
+        // return [...filtered];
+        const editedTask = tasks.map((t) => {
+          if (t.id === action.value.id) {
+            return {
+              ...t,
+              text: action.value.value,
+              dateTime: new Date(),
+            };
+          }
+        });
+        return editedTask;
       }
       default: {
         throw Error("Unknown action: " + action.type);
@@ -34,20 +45,30 @@ function App() {
       value: value,
     });
   }
-  function handleDelete(id) {
+  function handleEdited(value, id) {
     dispatch({
-      type: "TODO_DELETE",
-      value: id,
+      type: "TODO_EDITED",
+      value: { value, id },
     });
   }
 
   return (
-    <>
+    <div className="total-div">
       <div className="container">
-        <h1>My todo</h1>
-        <Card />
+        <h2>My todo</h2>
+        <Card
+          addTodo={(text) => handleAdd(text)}
+          tasks={tasks}
+          edited={handleEdited}
+        />
       </div>
-    </>
+      <div className="progess">
+        <h2>progress</h2>
+      </div>
+      <div className="done">
+        <h2>Done</h2>
+      </div>
+    </div>
   );
 }
 
