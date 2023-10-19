@@ -11,6 +11,9 @@ function CardContentent({
   function handletaskChange(newValue) {
     setText(newValue);
   }
+  function handleBlurInCard(text, id) {
+    handleBlur(text, id);
+  }
   return (
     <>
       <div className="delete">
@@ -19,7 +22,7 @@ function CardContentent({
       <textarea
         value={text}
         onChange={(e) => handletaskChange(e.target.value)}
-        onBlur={() => handleBlur(text, task.id)}
+        onBlur={() => handleBlurInCard(text, task.id)}
         placeholder="text here"
       />
       <div className="date-time">

@@ -12,9 +12,10 @@ function Card({ addTodo, handleTaskEdit, handleDelete, tasks }) {
   function handleDeletebtn(id) {
     handleDelete(id);
   }
-  function onDragStart(e, id) {
-    console.log(id);
-  }
+  const onDragStart = (ev, id) => {
+    console.log("dragstart:", id);
+    ev.dataTransfer.setData("id", id);
+  };
 
   return (
     <>

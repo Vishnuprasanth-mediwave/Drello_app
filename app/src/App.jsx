@@ -38,6 +38,15 @@ function App() {
         const filtered = tasks.filter((t) => t.id !== action.value);
         return filtered;
       }
+      case "TASK_DROP": {
+        let newTasks = tasks.filter((task) => {
+          if (task.id == action.value.id) {
+            task.inState = action.value.state;
+          }
+          return task;
+        });
+        return newTasks;
+      }
       case "TASK_EDITED": {
         const editedTask = [...tasks];
         const idx = editedTask.findIndex((nt) => nt.id === action.value.id);
@@ -71,10 +80,34 @@ function App() {
       value: { value, id },
     });
   }
+  function onDrop(ev, state) {
+    let id = ev.dataTransfer.getData("id");
+    dispatch({
+      type: "TASK_DROP",
+      value: { id, state },
+    });
+  }
+  const onDragOver = (ev) => {
+    ev.preventDefault();
+  };
 
+  // const onDrop = (ev, state) => {
+  //   let id = ev.dataTransfer.getData("id");
+
+  //   let newTasks = tasks.filter((task) => {
+  //     if (task.id == action.value.id) {
+  //       task.inState = action.value.state;
+  //     }
+  //     return task;
+  //   });
+  // };
   return (
     <div className="total-div">
-      <div className="container">
+      <div
+        className="container"
+        onDragOver={(e) => onDragOver(e)}
+        onDrop={(e) => onDrop(e, "todo")}
+      >
         <h2>My todo</h2>
         <Card
           addTodo={handleAdd}
@@ -83,13 +116,29 @@ function App() {
           handleDelete={(id) => handleDelete(id)}
         />
       </div>
-      <div className="progess">
+      <div
+        className="progess"
+        onDragOver={(e) => onDragOver(e)}
+        onDrop={(e) => onDrop(e, "in_progress")}
+      >
         <h2>progress</h2>
-        <In_progress tasks={tasks} />
+        <In_progress
+          tasks={tasks}
+          handleTaskEdit={handleEdited}
+          handleDelete={(id) => handleDelete(id)}
+        />
       </div>
-      <div className="done">
+      <div
+        className="done"
+        onDragOver={(e) => onDragOver(e)}
+        onDrop={(e) => onDrop(e, "done")}
+      >
         <h2>Done</h2>
-        <Done tasks={tasks} />
+        <Done
+          tasks={tasks}
+          handleTaskEdit={handleEdited}
+          handleDelete={(id) => handleDelete(id)}
+        />
       </div>
     </div>
   );

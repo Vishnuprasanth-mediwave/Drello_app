@@ -1,12 +1,17 @@
+import React, { useState } from "react";
 import CardContentent from "./CardContent";
 
 function In_progress({ handleTaskEdit, handleDelete, tasks }) {
-  function handleBlur(id) {
+  function handleBlur(text, id) {
     handleTaskEdit(text, id);
   }
   function handleDeletebtn(id) {
     handleDelete(id);
   }
+  const onDragStart = (ev, id) => {
+    console.log("dragstart:", id);
+    ev.dataTransfer.setData("id", id);
+  };
 
   return (
     <>

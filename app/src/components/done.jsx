@@ -2,12 +2,16 @@ import React, { useState } from "react";
 import CardContentent from "./CardContent";
 
 function Done({ handleTaskEdit, handleDelete, tasks }) {
-  function handleBlur(id) {
+  function handleBlur(text, id) {
     handleTaskEdit(text, id);
   }
   function handleDeletebtn(id) {
     handleDelete(id);
   }
+  const onDragStart = (ev, id) => {
+    console.log("dragstart:", id);
+    ev.dataTransfer.setData("id", id);
+  };
   return (
     <>
       <div className="card-div">
@@ -25,7 +29,6 @@ function Done({ handleTaskEdit, handleDelete, tasks }) {
               <CardContentent
                 task={task}
                 handleDeletebtn={handleDeletebtn}
-                // handletaskChange={handletaskChange}
                 handleBlur={handleBlur}
               />
             </div>
