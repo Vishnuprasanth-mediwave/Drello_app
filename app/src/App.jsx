@@ -1,10 +1,24 @@
-import { useReducer } from "react";
+import { useReducer, useEffect } from "react";
 import Card from "./components/card";
+import In_progress from "./components/inprogress.jsx";
+import Done from "./components/done";
 import { v4 as uuidv4 } from "uuid";
 import "./App.css";
 
 function App() {
-  const [tasks, dispatch] = useReducer(todoReducer, []);
+  const [tasks, dispatch] = useReducer(todoReducer, getFromLocalStorage());
+  useEffect(() => {
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+  }, [tasks]);
+
+  function getFromLocalStorage() {
+    const storedValues = localStorage.getItem("tasks");
+    if (storedValues) {
+      return JSON.parse(storedValues);
+    } else {
+      return [];
+    }
+  }
 
   function todoReducer(tasks, action) {
     switch (action.type) {
@@ -28,7 +42,8 @@ function App() {
         const editedTask = [...tasks];
         const idx = editedTask.findIndex((nt) => nt.id === action.value.id);
         if (idx !== -1) {
-          editedTask[idx]["text"] = action.value.value;
+          (editedTask[idx]["dateTime"] = new Date()),
+            (editedTask[idx]["text"] = action.value.value);
         }
         return editedTask;
       }
@@ -70,9 +85,11 @@ function App() {
       </div>
       <div className="progess">
         <h2>progress</h2>
+        <In_progress tasks={tasks} />
       </div>
       <div className="done">
         <h2>Done</h2>
+        <Done tasks={tasks} />
       </div>
     </div>
   );

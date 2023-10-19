@@ -1,29 +1,18 @@
 import React, { useState } from "react";
 import CardContentent from "./CardContent";
 
-function Card({ addTodo, handleTaskEdit, handleDelete, tasks }) {
-  const addCard = () => {
-    addTodo("");
-  };
-
-  function handleBlur(text, id) {
+function Done({ handleTaskEdit, handleDelete, tasks }) {
+  function handleBlur(id) {
     handleTaskEdit(text, id);
   }
   function handleDeletebtn(id) {
     handleDelete(id);
   }
-  function onDragStart(e, id) {
-    console.log(id);
-  }
-
   return (
     <>
-      <div className="add">
-        <button onClick={addCard}>+</button>
-      </div>
       <div className="card-div">
         {tasks
-          .filter((t) => t.inState === "todo")
+          .filter((t) => t.inState === "done")
           .map((task) => (
             <div
               className="card"
@@ -45,5 +34,4 @@ function Card({ addTodo, handleTaskEdit, handleDelete, tasks }) {
     </>
   );
 }
-
-export default Card;
+export default Done;
